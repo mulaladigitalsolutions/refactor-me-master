@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ProcessDelivery
+﻿namespace ProcessDelivery.Domain.Models
 {
     public class Book
     {

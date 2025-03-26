@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rambu\\Downloads\\refactor-me-master\\refactor-me-master\\ProcessDelivery\\ProcessDelivery.csproj": {}
+    "C:\\Users\\rambu\\Source\\Repos\\refactor-me-master\\ProcessDelivery\\ProcessDelivery.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rambu\\Downloads\\refactor-me-master\\refactor-me-master\\ProcessDelivery\\ProcessDelivery.csproj": {
+    "C:\\Users\\rambu\\Source\\Repos\\refactor-me-master\\ProcessDelivery\\ProcessDelivery.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rambu\\Downloads\\refactor-me-master\\refactor-me-master\\ProcessDelivery\\ProcessDelivery.csproj",
+        "projectUniqueName": "C:\\Users\\rambu\\Source\\Repos\\refactor-me-master\\ProcessDelivery\\ProcessDelivery.csproj",
         "projectName": "ProcessDelivery",
-        "projectPath": "C:\\Users\\rambu\\Downloads\\refactor-me-master\\refactor-me-master\\ProcessDelivery\\ProcessDelivery.csproj",
+        "projectPath": "C:\\Users\\rambu\\Source\\Repos\\refactor-me-master\\ProcessDelivery\\ProcessDelivery.csproj",
         "packagesPath": "C:\\Users\\rambu\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rambu\\Downloads\\refactor-me-master\\refactor-me-master\\ProcessDelivery\\obj\\",
+        "outputPath": "C:\\Users\\rambu\\Source\\Repos\\refactor-me-master\\ProcessDelivery\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

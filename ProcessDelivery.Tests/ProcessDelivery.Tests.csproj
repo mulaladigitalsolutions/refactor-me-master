@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ProcessDelivery\ProcessDelivery.csproj" />
+    <ProjectReference Include="..\ProcessDelivery.Domain\ProcessDelivery.Domain.csproj" />
+    <ProjectReference Include="..\ProcessDelivery\ProcessDelivery.Application.csproj" />
   </ItemGroup>
 
 </Project>

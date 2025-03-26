@@ -1,10 +1,21 @@
 using System;
+using ProcessDelivery.BusinessLogic;
+using ProcessDelivery.Domain.Enums;
+using ProcessDelivery.Domain.Models;
+using ProcessDelivery.RiskStrategies;
 using Xunit;
 
 namespace ProcessDelivery.Tests
 {
     public class ReturnBookTests
     {
+        private readonly LibraryManager libraryManager;
+
+        public ReturnBookTests()
+        {
+            libraryManager = new LibraryManager(); // Uses injected strategies
+        }
+
         [Fact]
         public void ShouldReturn_LowRisk_When_NoReturnHistoryExistsAndReturnedOnDueDateThisTime()
         {
@@ -16,7 +27,9 @@ namespace ProcessDelivery.Tests
 
                 CurrentDueDate = currentDueDate,
             };
-            var libraryManager = new LibraryManager();
+
+            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
+             * var libraryManager = new LibraryManager();*/
 
             var result = libraryManager.ReturnBook(book, currentDueDate);
 
@@ -34,7 +47,10 @@ namespace ProcessDelivery.Tests
 
                 CurrentDueDate = currentDueDate,
             };
-            var libraryManager = new LibraryManager();
+
+            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
+             * var libraryManager = new LibraryManager();*/
+
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
 
@@ -52,7 +68,9 @@ namespace ProcessDelivery.Tests
 
                 CurrentDueDate = currentDueDate,
             };
-            var libraryManager = new LibraryManager();
+
+            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
+   * var libraryManager = new LibraryManager();*/
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
 
@@ -73,7 +91,10 @@ namespace ProcessDelivery.Tests
 
                 CurrentDueDate = currentDueDate,
             };
-            var libraryManager = new LibraryManager();
+
+            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
+ * var libraryManager = new LibraryManager();*/
+
 
             var result = libraryManager.ReturnBook(book, currentDueDate);
 
@@ -92,7 +113,10 @@ namespace ProcessDelivery.Tests
 
                 CurrentDueDate = currentDueDate,
             };
-            var libraryManager = new LibraryManager();
+
+            /* TODO: No longer need to create a new instance of LibraryManager with each test manually as it is now part of shared setup logic which gets a fresh instance with each test
+ * var libraryManager = new LibraryManager();*/
+
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
 
@@ -111,7 +135,10 @@ namespace ProcessDelivery.Tests
 
                 CurrentDueDate = currentDueDate,
             };
-            var libraryManager = new LibraryManager();
+
+            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
+ * var libraryManager = new LibraryManager();*/
+
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
 
@@ -134,13 +161,16 @@ namespace ProcessDelivery.Tests
 
                 CurrentDueDate = currentDueDate,
             };
-            var libraryManager = new LibraryManager();
+
+            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
+ * var libraryManager = new LibraryManager();*/
+
 
             var result = libraryManager.ReturnBook(book, currentDueDate);
 
             Assert.Equal("MediumRisk: returned late last time but on due date this time", result);
         }
-        
+
         [Fact]
         public void ShouldReturn_HighRisk_When_BookWasReturnedLateLastTimeAndLateThisTime()
         {
@@ -153,7 +183,9 @@ namespace ProcessDelivery.Tests
 
                 CurrentDueDate = currentDueDate,
             };
-            var libraryManager = new LibraryManager();
+
+            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
+ * var libraryManager = new LibraryManager();*/
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
 
@@ -172,7 +204,9 @@ namespace ProcessDelivery.Tests
 
                 CurrentDueDate = currentDueDate,
             };
-            var libraryManager = new LibraryManager();
+
+            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
+ * var libraryManager = new LibraryManager();*/
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
 
@@ -192,7 +226,9 @@ namespace ProcessDelivery.Tests
 
                 CurrentDueDate = currentDueDate,
             };
-            var libraryManager = new LibraryManager();
+
+            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
+ * var libraryManager = new LibraryManager();*/
 
             var result = libraryManager.ReturnBook(book, currentDueDate);
 
@@ -211,7 +247,9 @@ namespace ProcessDelivery.Tests
 
                 CurrentDueDate = currentDueDate,
             };
-            var libraryManager = new LibraryManager();
+
+            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
+ * var libraryManager = new LibraryManager();*/
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
 
@@ -230,11 +268,23 @@ namespace ProcessDelivery.Tests
 
                 CurrentDueDate = currentDueDate,
             };
-            var libraryManager = new LibraryManager();
+
+            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
+ * var libraryManager = new LibraryManager();*/
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
 
             Assert.Equal("LowRisk: returned early last time and early this time", result);
+        }
+
+        [Fact]
+        public void ShouldReturnLowRisk_WhenReturnedOnTime()
+        {
+            var strategy = new InitialReturnStrategy();
+            var book = new Book { CurrentDueDate = DateTime.Today };
+            var result = strategy.Evaluate(book, DateTime.Today);
+
+            Assert.Equal(RiskLevel.Low, result.Level);
         }
 
     }
