@@ -3,7 +3,7 @@ using ProcessDelivery.Domain.Enums;
 using ProcessDelivery.Domain.Interfaces;
 using ProcessDelivery.Domain.Models;
 
-namespace ProcessDelivery.RiskStrategies
+namespace ProcessDelivery.Application.RiskStrategies
 {
     public class InitialReturnStrategy : IRiskStrategy
     {

@@ -1,8 +1,9 @@
 using System;
 using ProcessDelivery.Domain.Enums;
 using ProcessDelivery.Domain.Models;
-using ProcessDelivery.RiskStrategies;
+using ProcessDelivery.Application.RiskStrategies;
 using Xunit;
+using ProcessDelivery.Application;
 
 namespace ProcessDelivery.Tests
 {
@@ -254,9 +255,7 @@ namespace ProcessDelivery.Tests
 
                 CurrentDueDate = currentDueDate,
             };
-
-            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
- * var libraryManager = new LibraryManager();*/
+            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
 

@@ -3,7 +3,7 @@ using System;
 using ProcessDelivery.Domain.Interfaces;
 using ProcessDelivery.Domain.Models;
 
-namespace ProcessDelivery.RiskStrategies
+namespace ProcessDelivery.Application.RiskStrategies
 {
     public class EarlyThenLateStrategy : IRiskStrategy
     {

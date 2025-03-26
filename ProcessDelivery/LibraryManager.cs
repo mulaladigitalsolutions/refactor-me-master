@@ -3,10 +3,10 @@ using ProcessDelivery.Domain.Interfaces;
 using System.Collections.Generic;
 using ProcessDelivery.Domain.Models;
 using System.Linq;
-using ProcessDelivery.RiskStrategies;
+using ProcessDelivery.Application.RiskStrategies;
 
 
-namespace ProcessDelivery
+namespace ProcessDelivery.Application
 {
     public class LibraryManager
     {
@@ -31,11 +31,13 @@ namespace ProcessDelivery
         {
             var strategy = _riskStrategies.FirstOrDefault(s => s.IsMatch(book, dateReturned));
 
-            if (strategy == null)
-                throw new InvalidOperationException("No matching risk strategy found.");
+            if (strategy != null)
+            {
+                var result = strategy.Evaluate(book, dateReturned);
+                return result.ToString();
+            }
 
-            var result = strategy.Evaluate(book, dateReturned);
-            return result.ToString();
+            throw new InvalidOperationException("No matching risk strategy found.");
         }
     }
 }
