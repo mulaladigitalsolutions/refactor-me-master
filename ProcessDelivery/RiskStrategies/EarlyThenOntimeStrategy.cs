@@ -5,7 +5,7 @@ using ProcessDelivery.Domain.Models;
 
 namespace ProcessDelivery.RiskStrategies
 {
-    public class EarlyThenOntimeStrategy : IRiskStrategy
+    public class EarlyThenOnTimeStrategy : IRiskStrategy
     {
         public bool IsMatch(Book book, DateTime dateReturned)
         {

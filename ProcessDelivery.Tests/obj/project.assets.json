@@ -2169,13 +2169,23 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v9.0",
         "dependencies": {
-          "C:\\Users\\rambu\\OneDrive\\Documents\\Code\\refactor-me-master\\ProcessDelivery.Domain\\ProcessDelivery.Domain.csproj": "1.0.0"
+          "ProcessDelivery.Domain": "1.0.0"
         },
         "compile": {
           "bin/placeholder/ProcessDelivery.Application.dll": {}
         },
         "runtime": {
           "bin/placeholder/ProcessDelivery.Application.dll": {}
+        }
+      },
+      "ProcessDelivery.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v9.0",
+        "compile": {
+          "bin/placeholder/ProcessDelivery.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/ProcessDelivery.Domain.dll": {}
         }
       }
     }
@@ -6730,13 +6740,18 @@
       "type": "project",
       "path": "../ProcessDelivery/ProcessDelivery.Application.csproj",
       "msbuildProject": "../ProcessDelivery/ProcessDelivery.Application.csproj"
+    },
+    "ProcessDelivery.Domain/1.0.0": {
+      "type": "project",
+      "path": "../ProcessDelivery.Domain/ProcessDelivery.Domain.csproj",
+      "msbuildProject": "../ProcessDelivery.Domain/ProcessDelivery.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
-      "C:\\Users\\rambu\\OneDrive\\Documents\\Code\\refactor-me-master\\ProcessDelivery.Domain\\ProcessDelivery.Domain.csproj",
       "Microsoft.NET.Test.Sdk >= 16.0.1",
       "ProcessDelivery.Application >= 1.0.0",
+      "ProcessDelivery.Domain >= 1.0.0",
       "xunit >= 2.4.0",
       "xunit.runner.visualstudio >= 2.4.0"
     ]
@@ -6831,16 +6846,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1105",
-      "level": "Error",
-      "message": "Unable to find project information for 'C:\\Users\\rambu\\OneDrive\\Documents\\Code\\refactor-me-master\\ProcessDelivery.Domain\\ProcessDelivery.Domain.csproj'. If you are using Visual Studio, this may be because the project is unloaded or not part of the current solution so run a restore from the command-line. Otherwise, the project file may be invalid or missing targets required for restore.",
-      "libraryId": "C:\\Users\\rambu\\OneDrive\\Documents\\Code\\refactor-me-master\\ProcessDelivery.Domain\\ProcessDelivery.Domain.csproj",
-      "targetGraphs": [
-        "net9.0"
-      ]
-    }
-  ]
+  }
 }

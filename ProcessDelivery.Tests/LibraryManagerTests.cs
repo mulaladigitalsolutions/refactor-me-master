@@ -1,5 +1,4 @@
 using System;
-using ProcessDelivery.BusinessLogic;
 using ProcessDelivery.Domain.Enums;
 using ProcessDelivery.Domain.Models;
 using ProcessDelivery.RiskStrategies;
@@ -13,7 +12,7 @@ namespace ProcessDelivery.Tests
 
         public ReturnBookTests()
         {
-            libraryManager = new LibraryManager(); // Uses injected strategies
+            libraryManager = new LibraryManager();
         }
 
         [Fact]
@@ -28,8 +27,7 @@ namespace ProcessDelivery.Tests
                 CurrentDueDate = currentDueDate,
             };
 
-            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
-             * var libraryManager = new LibraryManager();*/
+            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
             var result = libraryManager.ReturnBook(book, currentDueDate);
 
@@ -48,9 +46,7 @@ namespace ProcessDelivery.Tests
                 CurrentDueDate = currentDueDate,
             };
 
-            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
-             * var libraryManager = new LibraryManager();*/
-
+            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
 
@@ -69,8 +65,7 @@ namespace ProcessDelivery.Tests
                 CurrentDueDate = currentDueDate,
             };
 
-            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
-   * var libraryManager = new LibraryManager();*/
+            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
 
@@ -92,9 +87,7 @@ namespace ProcessDelivery.Tests
                 CurrentDueDate = currentDueDate,
             };
 
-            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
- * var libraryManager = new LibraryManager();*/
-
+            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
             var result = libraryManager.ReturnBook(book, currentDueDate);
 
@@ -114,9 +107,7 @@ namespace ProcessDelivery.Tests
                 CurrentDueDate = currentDueDate,
             };
 
-            /* TODO: No longer need to create a new instance of LibraryManager with each test manually as it is now part of shared setup logic which gets a fresh instance with each test
- * var libraryManager = new LibraryManager();*/
-
+            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
 
@@ -136,9 +127,7 @@ namespace ProcessDelivery.Tests
                 CurrentDueDate = currentDueDate,
             };
 
-            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
- * var libraryManager = new LibraryManager();*/
-
+            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
 
@@ -162,9 +151,7 @@ namespace ProcessDelivery.Tests
                 CurrentDueDate = currentDueDate,
             };
 
-            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
- * var libraryManager = new LibraryManager();*/
-
+            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
             var result = libraryManager.ReturnBook(book, currentDueDate);
 
@@ -184,8 +171,7 @@ namespace ProcessDelivery.Tests
                 CurrentDueDate = currentDueDate,
             };
 
-            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
- * var libraryManager = new LibraryManager();*/
+            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
             var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
 

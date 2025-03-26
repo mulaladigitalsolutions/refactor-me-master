@@ -1,18 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KutwJa9BAQ0=",
-  "success": false,
+  "dgSpecHash": "A+Ix+regTUA=",
+  "success": true,
   "projectFilePath": "C:\\Users\\rambu\\OneDrive\\Documents\\Code\\refactor-me-master\\ProcessDelivery\\ProcessDelivery.Application.csproj",
   "expectedPackageFiles": [],
-  "logs": [
-    {
-      "code": "NU1105",
-      "level": "Error",
-      "message": "Unable to find project information for 'C:\\Users\\rambu\\OneDrive\\Documents\\Code\\refactor-me-master\\ProcessDelivery.Domain\\ProcessDelivery.Domain.csproj'. If you are using Visual Studio, this may be because the project is unloaded or not part of the current solution so run a restore from the command-line. Otherwise, the project file may be invalid or missing targets required for restore.",
-      "libraryId": "C:\\Users\\rambu\\OneDrive\\Documents\\Code\\refactor-me-master\\ProcessDelivery.Domain\\ProcessDelivery.Domain.csproj",
-      "targetGraphs": [
-        "net9.0"
-      ]
-    }
-  ]
+  "logs": []
 }

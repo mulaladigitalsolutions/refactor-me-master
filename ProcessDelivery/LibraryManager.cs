@@ -20,7 +20,7 @@ namespace ProcessDelivery
                 new OnTimeTwiceStrategy(),
                 new EarlyThenEarlyStrategy(),
                 new EarlyThenLateStrategy(),
-                new EarlyThenOntimeStrategy(),
+                new EarlyThenOnTimeStrategy(),
                 new LateThenLateStrategy(),
                 new LateThenOnTimeStrategy(),
                 new LateThenEarlyStrategy()

@@ -1,0 +1,12 @@
+C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Domain\bin\Debug\net9.0\ProcessDelivery.Domain.deps.json
+C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Domain\bin\Debug\net9.0\ProcessDelivery.Domain.dll
+C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Domain\bin\Debug\net9.0\ProcessDelivery.Domain.pdb
+C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Domain\obj\Debug\net9.0\ProcessDelivery.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Domain\obj\Debug\net9.0\ProcessDelivery.Domain.AssemblyInfoInputs.cache
+C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Domain\obj\Debug\net9.0\ProcessDelivery.Domain.AssemblyInfo.cs
+C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Domain\obj\Debug\net9.0\ProcessDelivery.Domain.csproj.CoreCompileInputs.cache
+C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Domain\obj\Debug\net9.0\ProcessDelivery.Domain.sourcelink.json
+C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Domain\obj\Debug\net9.0\ProcessDelivery.Domain.dll
+C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Domain\obj\Debug\net9.0\refint\ProcessDelivery.Domain.dll
+C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Domain\obj\Debug\net9.0\ProcessDelivery.Domain.pdb
+C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Domain\obj\Debug\net9.0\ref\ProcessDelivery.Domain.dll
