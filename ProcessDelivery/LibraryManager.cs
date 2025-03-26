@@ -29,15 +29,34 @@ namespace ProcessDelivery.Application
 
         public string ReturnBook(Book book, DateTime dateReturned)
         {
-            var strategy = _riskStrategies.FirstOrDefault(s => s.IsMatch(book, dateReturned));
-
-            if (strategy != null)
+            try
             {
-                var result = strategy.Evaluate(book, dateReturned);
-                return result.ToString();
-            }
+                if (book == null)
+                    throw new ArgumentNullException(nameof(book), "Book cannot be null.");
 
-            throw new InvalidOperationException("No matching risk strategy found.");
+                var strategy = _riskStrategies.FirstOrDefault(s => s.IsMatch(book, dateReturned));
+
+                if (strategy != null)
+                {
+                    var result = strategy.Evaluate(book, dateReturned);
+                    return result.ToString();
+                }
+
+                throw new InvalidOperationException("No matching risk strategy found.");
+            }
+            catch (ArgumentNullException ex)
+            {
+                throw new ApplicationException("Applicatiion Validation failed: " + ex.Message, ex);
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new ApplicationException("Risk Strategy error: " + ex.Message, ex);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("An unexpected error occurred in ReturnBook.", ex);
+            }
         }
+
     }
 }
