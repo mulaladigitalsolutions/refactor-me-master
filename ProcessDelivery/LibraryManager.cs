@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using ProcessDelivery.Domain.Models;
 using System.Linq;
 using ProcessDelivery.Application.RiskStrategies;
+using System.Threading.Tasks;
 
 
 namespace ProcessDelivery.Application
@@ -11,9 +12,11 @@ namespace ProcessDelivery.Application
     public class LibraryManager
     {
         private readonly IEnumerable<IRiskStrategy> _riskStrategies;
+        private readonly IAIRiskService _aiRiskService;
 
-        public LibraryManager()
+        public LibraryManager(IAIRiskService aiRiskService)
         {
+            _aiRiskService = aiRiskService;
             _riskStrategies =
             [
                 new InitialReturnStrategy(),
@@ -27,7 +30,7 @@ namespace ProcessDelivery.Application
             ];
         }
 
-        public string ReturnBook(Book book, DateTime dateReturned)
+        public async Task<string> ReturnBook(Book book, DateTime dateReturned)
         {
             try
             {
@@ -36,17 +39,19 @@ namespace ProcessDelivery.Application
 
                 var strategy = _riskStrategies.FirstOrDefault(s => s.IsMatch(book, dateReturned));
 
-                if (strategy != null)
+                if (strategy != null && book.CurrentDueDate != default)
                 {
                     var result = strategy.Evaluate(book, dateReturned);
                     return result.ToString();
                 }
 
-                throw new InvalidOperationException("No matching risk strategy found.");
+                // No matching strategy — fallback to AI
+                var aiResult = await _aiRiskService.PredictRisk(book, dateReturned);
+                return aiResult.ToString();
             }
             catch (ArgumentNullException ex)
             {
-                throw new ApplicationException("Applicatiion Validation failed: " + ex.Message, ex);
+                throw new ApplicationException("Validation failed: " + ex.Message, ex);
             }
             catch (InvalidOperationException ex)
             {
@@ -57,6 +62,5 @@ namespace ProcessDelivery.Application
                 throw new ApplicationException("An unexpected error occurred in ReturnBook.", ex);
             }
         }
-
     }
 }
