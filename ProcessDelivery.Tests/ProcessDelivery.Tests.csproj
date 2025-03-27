@@ -8,12 +8,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
+    <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="xunit" Version="2.4.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ProcessDelivery.Domain\ProcessDelivery.Domain.csproj" />
+    <ProjectReference Include="..\ProcessDelivery.Infrastructure\ProcessDelivery.Infrastructure.csproj" />
     <ProjectReference Include="..\ProcessDelivery\ProcessDelivery.Application.csproj" />
   </ItemGroup>
 

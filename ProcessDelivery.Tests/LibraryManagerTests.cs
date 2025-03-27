@@ -4,6 +4,8 @@ using ProcessDelivery.Domain.Models;
 using ProcessDelivery.Application.RiskStrategies;
 using Xunit;
 using ProcessDelivery.Application;
+using System.Threading.Tasks;
+using ProcessDelivery.Infrastructure.Services;
 
 namespace ProcessDelivery.Tests
 {
@@ -13,11 +15,11 @@ namespace ProcessDelivery.Tests
 
         public ReturnBookTests()
         {
-            libraryManager = new LibraryManager();
+            libraryManager = new LibraryManager(new FakeAIRiskService());
         }
 
         [Fact]
-        public void ShouldReturn_LowRisk_When_NoReturnHistoryExistsAndReturnedOnDueDateThisTime()
+        public async Task ShouldReturn_LowRisk_When_NoReturnHistoryExistsAndReturnedOnDueDateThisTime()
         {
             var currentDueDate = DateTime.Now;
             var book = new Book()
@@ -30,13 +32,13 @@ namespace ProcessDelivery.Tests
 
             //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
-            var result = libraryManager.ReturnBook(book, currentDueDate);
+            var result = await libraryManager.ReturnBook(book, currentDueDate);
 
             Assert.Equal("LowRisk: first time being returned and returned on time", result);
         }
 
         [Fact]
-        public void ShouldReturn_MediumRisk_When_NoReturnHistoryExistsAndReturnedLateThisTime()
+        public async Task ShouldReturn_MediumRisk_When_NoReturnHistoryExistsAndReturnedLateThisTime()
         {
             var currentDueDate = DateTime.Now.AddDays(-1);
             var book = new Book()
@@ -49,13 +51,13 @@ namespace ProcessDelivery.Tests
 
             //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
+            var result = await libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
 
             Assert.Equal("MediumRisk: first time being returned and returned late", result);
         }
 
         [Fact]
-        public void ShouldReturn_MediumRisk_When_NoReturnHistoryExistsAndReturnedEarlyThisTime()
+        public async Task ShouldReturn_MediumRisk_When_NoReturnHistoryExistsAndReturnedEarlyThisTime()
         {
             var currentDueDate = DateTime.Now;
             var book = new Book()
@@ -68,7 +70,7 @@ namespace ProcessDelivery.Tests
 
             //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
+            var result = await libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
 
             Assert.Equal("LowRisk: first time being returned and returned early", result);
         }
@@ -76,7 +78,7 @@ namespace ProcessDelivery.Tests
 
 
         [Fact]
-        public void ShouldReturn_LowRisk_When_BookWasReturnedOnDueDateLastTimeAndOnDueDateThisTime()
+        public async Task ShouldReturn_LowRisk_When_BookWasReturnedOnDueDateLastTimeAndOnDueDateThisTime()
         {
             var lastDueDate = DateTime.Now.AddDays(-1);
             var currentDueDate = DateTime.Now;
@@ -90,13 +92,13 @@ namespace ProcessDelivery.Tests
 
             //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
-            var result = libraryManager.ReturnBook(book, currentDueDate);
+            var result = await libraryManager.ReturnBook(book, currentDueDate);
 
             Assert.Equal("LowRisk: returned on due date last 2 times", result);
         }
 
         [Fact]
-        public void ShouldReturn_MediumRisk_When_BookWasReturnedOnDueDateLastTimeButWasLateThisTime()
+        public async Task ShouldReturn_MediumRisk_When_BookWasReturnedOnDueDateLastTimeButWasLateThisTime()
         {
             var lastDueDate = DateTime.Now.AddDays(-1);
             var currentDueDate = DateTime.Now;
@@ -110,13 +112,13 @@ namespace ProcessDelivery.Tests
 
             //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
+            var result = await libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
 
             Assert.Equal("MediumRisk: returned on due date last time but late this time", result);
         }
 
         [Fact]
-        public void ShouldReturn_MediumRisk_When_BookWasReturnedOnDueDateLastTimeButWasEarlyThisTime()
+        public async Task ShouldReturn_MediumRisk_When_BookWasReturnedOnDueDateLastTimeButWasEarlyThisTime()
         {
             var lastDueDate = DateTime.Now.AddDays(-1);
             var currentDueDate = DateTime.Now;
@@ -130,7 +132,7 @@ namespace ProcessDelivery.Tests
 
             //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
+            var result = await libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
 
             Assert.Equal("MediumRisk: returned on due date last time but early this time", result);
         }
@@ -140,7 +142,7 @@ namespace ProcessDelivery.Tests
 
 
         [Fact]
-        public void ShouldReturn_MediumRisk_When_BookWasLateLastTimeButOnDueDateThisTime()
+        public async Task ShouldReturn_MediumRisk_When_BookWasLateLastTimeButOnDueDateThisTime()
         {
             var lastDueDate = DateTime.Now.AddDays(-1);
             var currentDueDate = DateTime.Now;
@@ -154,13 +156,13 @@ namespace ProcessDelivery.Tests
 
             //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
-            var result = libraryManager.ReturnBook(book, currentDueDate);
+            var result = await libraryManager.ReturnBook(book, currentDueDate);
 
             Assert.Equal("MediumRisk: returned late last time but on due date this time", result);
         }
 
         [Fact]
-        public void ShouldReturn_HighRisk_When_BookWasReturnedLateLastTimeAndLateThisTime()
+        public async Task ShouldReturn_HighRisk_When_BookWasReturnedLateLastTimeAndLateThisTime()
         {
             var lastDueDate = DateTime.Now.AddDays(-2);
             var currentDueDate = DateTime.Now.AddDays(-1);
@@ -174,13 +176,13 @@ namespace ProcessDelivery.Tests
 
             //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
+            var result = await libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
 
             Assert.Equal("HighRisk: returned late last time and late this time", result);
         }
 
         [Fact]
-        public void ShouldReturn_MediumRisk_When_BookWasLateLastTimeButEarlyThisTime()
+        public async Task ShouldReturn_MediumRisk_When_BookWasLateLastTimeButEarlyThisTime()
         {
             var lastDueDate = DateTime.Now.AddDays(-2);
             var currentDueDate = DateTime.Now;
@@ -195,14 +197,14 @@ namespace ProcessDelivery.Tests
             /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
  * var libraryManager = new LibraryManager();*/
 
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
+            var result = await libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
 
             Assert.Equal("MediumRisk: returned late last time but early this time", result);
         }
 
 
         [Fact]
-        public void ShouldReturn_LowRisk_When_BookWasReturnedEarlyLastTimeAndOnDueDateThisTime()
+        public async Task ShouldReturn_LowRisk_When_BookWasReturnedEarlyLastTimeAndOnDueDateThisTime()
         {
             var lastDueDate = DateTime.Now.AddDays(-1);
             var currentDueDate = DateTime.Now;
@@ -217,13 +219,13 @@ namespace ProcessDelivery.Tests
             /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
  * var libraryManager = new LibraryManager();*/
 
-            var result = libraryManager.ReturnBook(book, currentDueDate);
+            var result = await libraryManager.ReturnBook(book, currentDueDate);
 
             Assert.Equal("LowRisk: returned on early last time and on due date this time", result);
         }
 
         [Fact]
-        public void ShouldReturn_MediumRisk_When_BookWasReturnedEarlyLastTimeButWasLateThisTime()
+        public async Task ShouldReturn_MediumRisk_When_BookWasReturnedEarlyLastTimeButWasLateThisTime()
         {
             var lastDueDate = DateTime.Now.AddDays(-2);
             var currentDueDate = DateTime.Now.AddDays(-1);
@@ -238,13 +240,13 @@ namespace ProcessDelivery.Tests
             /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
  * var libraryManager = new LibraryManager();*/
 
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
+            var result = await libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
 
             Assert.Equal("MediumRisk: returned early last time but late this time", result);
         }
 
         [Fact]
-        public void ShouldReturn_LowRisk_When_BookWasReturnedEarlyLastTimeAndEarlyThisTime()
+        public async Task ShouldReturn_LowRisk_When_BookWasReturnedEarlyLastTimeAndEarlyThisTime()
         {
             var lastDueDate = DateTime.Now.AddDays(-2);
             var currentDueDate = DateTime.Now.AddDays(-1);
@@ -257,7 +259,7 @@ namespace ProcessDelivery.Tests
             };
             //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
+            var result = await libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
 
             Assert.Equal("LowRisk: returned early last time and early this time", result);
         }
@@ -270,6 +272,24 @@ namespace ProcessDelivery.Tests
             var result = strategy.Evaluate(book, DateTime.Today);
 
             Assert.Equal(RiskLevel.Low, result.Level);
+        }
+
+        [Fact]
+        public async Task ShouldCallOpenAIAndReturnLivePrediction()
+        {
+            var book = new Book
+            {
+                LastDueDate = null,
+                LastReturnedDate = null,
+                CurrentDueDate = default
+            };
+
+            var aiService = new OpenAIRiskService("go-and-buy-your-own-apikey");
+            var manager = new LibraryManager(aiService);
+
+            var result = await libraryManager.ReturnBook(book, DateTime.Today.AddYears(10));
+
+            Assert.Contains("AI Risk Prediction:", result);
         }
 
     }
