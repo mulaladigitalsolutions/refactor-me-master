@@ -17,11 +17,31 @@ namespace ProcessDelivery.Application.RiskStrategies
 
         public RiskAssessmentResult Evaluate(Book book, DateTime dateReturned)
         {
-            return new RiskAssessmentResult
+            if (book.CurrentDueDate == dateReturned)
             {
-                Level = RiskLevel.Low,
-                Reason = "returned early last time and early this time"
-            };
+                return new RiskAssessmentResult
+                {
+                    Level = RiskLevel.Low,
+                    Reason = "returned early last time and on due date this time"
+                };
+            }
+            else if (book.CurrentDueDate < dateReturned)
+            {
+                return new RiskAssessmentResult
+                {
+                    Level = RiskLevel.Medium,
+                    Reason = "returned early last time but late this time"
+                };
+            }
+            else
+            {
+                return new RiskAssessmentResult
+                {
+                    Level = RiskLevel.Low,
+                    Reason = "returned early last time and early this time"
+                };
+            }
         }
+
     }
 }

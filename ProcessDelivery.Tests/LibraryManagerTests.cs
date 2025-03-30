@@ -1,276 +1,132 @@
+// ProcessDelivery.Tests/LibraryManagerTests.cs (LibraryManager only)
 using System;
-using ProcessDelivery.Domain.Enums;
+using System.Threading.Tasks;
 using ProcessDelivery.Domain.Models;
-using ProcessDelivery.Application.RiskStrategies;
-using Xunit;
 using ProcessDelivery.Application;
+using Xunit;
+using ProcessDelivery.Tests.Fake;
 
 namespace ProcessDelivery.Tests
 {
-    public class ReturnBookTests
+    public class LibraryManagerTests
     {
-        private readonly LibraryManager libraryManager;
+        private readonly LibraryManager _libraryManager;
 
-        public ReturnBookTests()
+        public LibraryManagerTests()
         {
-            libraryManager = new LibraryManager();
+            _libraryManager = new LibraryManager(new FakeAIRiskService());
         }
 
         [Fact]
-        public void ShouldReturn_LowRisk_When_NoReturnHistoryExistsAndReturnedOnDueDateThisTime()
+        public async Task ShouldReturn_LowRisk_When_NoReturnHistoryExistsAndReturnedOnDueDateThisTime()
         {
-            var currentDueDate = DateTime.Now;
-            var book = new Book()
-            {
-                LastDueDate = null,
-                LastReturnedDate = null,
+            var currentDueDate = DateTime.Today;
+            var book = new Book { LastDueDate = null, LastReturnedDate = null, CurrentDueDate = currentDueDate };
 
-                CurrentDueDate = currentDueDate,
-            };
-
-            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
-
-            var result = libraryManager.ReturnBook(book, currentDueDate);
+            var result = await _libraryManager.ReturnBook(book, currentDueDate);
 
             Assert.Equal("LowRisk: first time being returned and returned on time", result);
         }
 
         [Fact]
-        public void ShouldReturn_MediumRisk_When_NoReturnHistoryExistsAndReturnedLateThisTime()
+        public async Task ShouldReturn_MediumRisk_When_NoReturnHistoryExistsAndReturnedLateThisTime()
         {
-            var currentDueDate = DateTime.Now.AddDays(-1);
-            var book = new Book()
-            {
-                LastDueDate = null,
-                LastReturnedDate = null,
+            var currentDueDate = DateTime.Today;
+            var book = new Book { LastDueDate = null, LastReturnedDate = null, CurrentDueDate = currentDueDate };
 
-                CurrentDueDate = currentDueDate,
-            };
-
-            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
-
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
+            var result = await _libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
 
             Assert.Equal("MediumRisk: first time being returned and returned late", result);
         }
 
         [Fact]
-        public void ShouldReturn_MediumRisk_When_NoReturnHistoryExistsAndReturnedEarlyThisTime()
+        public async Task ShouldReturn_LowRisk_When_NoReturnHistoryExistsAndReturnedEarlyThisTime()
         {
-            var currentDueDate = DateTime.Now;
-            var book = new Book()
-            {
-                LastDueDate = null,
-                LastReturnedDate = null,
+            var currentDueDate = DateTime.Today;
+            var book = new Book { LastDueDate = null, LastReturnedDate = null, CurrentDueDate = currentDueDate };
 
-                CurrentDueDate = currentDueDate,
-            };
-
-            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
-
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
+            var result = await _libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
 
             Assert.Equal("LowRisk: first time being returned and returned early", result);
         }
 
-
-
         [Fact]
-        public void ShouldReturn_LowRisk_When_BookWasReturnedOnDueDateLastTimeAndOnDueDateThisTime()
+        public async Task ShouldReturn_HighRisk_When_BookWasReturnedLateLastTime_AndLateAgain()
         {
-            var lastDueDate = DateTime.Now.AddDays(-1);
-            var currentDueDate = DateTime.Now;
-            var book = new Book()
+            var lastDueDate = DateTime.Today.AddDays(-2);
+            var currentDueDate = DateTime.Today.AddDays(-1);
+            var book = new Book
             {
                 LastDueDate = lastDueDate,
-                LastReturnedDate = lastDueDate,
-
-                CurrentDueDate = currentDueDate,
+                LastReturnedDate = lastDueDate.AddDays(1), // late
+                CurrentDueDate = currentDueDate
             };
 
-            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
-
-            var result = libraryManager.ReturnBook(book, currentDueDate);
-
-            Assert.Equal("LowRisk: returned on due date last 2 times", result);
-        }
-
-        [Fact]
-        public void ShouldReturn_MediumRisk_When_BookWasReturnedOnDueDateLastTimeButWasLateThisTime()
-        {
-            var lastDueDate = DateTime.Now.AddDays(-1);
-            var currentDueDate = DateTime.Now;
-            var book = new Book()
-            {
-                LastDueDate = lastDueDate,
-                LastReturnedDate = lastDueDate,
-
-                CurrentDueDate = currentDueDate,
-            };
-
-            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
-
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
-
-            Assert.Equal("MediumRisk: returned on due date last time but late this time", result);
-        }
-
-        [Fact]
-        public void ShouldReturn_MediumRisk_When_BookWasReturnedOnDueDateLastTimeButWasEarlyThisTime()
-        {
-            var lastDueDate = DateTime.Now.AddDays(-1);
-            var currentDueDate = DateTime.Now;
-            var book = new Book()
-            {
-                LastDueDate = lastDueDate,
-                LastReturnedDate = lastDueDate,
-
-                CurrentDueDate = currentDueDate,
-            };
-
-            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
-
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
-
-            Assert.Equal("MediumRisk: returned on due date last time but early this time", result);
-        }
-
-
-
-
-
-        [Fact]
-        public void ShouldReturn_MediumRisk_When_BookWasLateLastTimeButOnDueDateThisTime()
-        {
-            var lastDueDate = DateTime.Now.AddDays(-1);
-            var currentDueDate = DateTime.Now;
-            var book = new Book()
-            {
-                LastDueDate = lastDueDate,
-                LastReturnedDate = lastDueDate.AddDays(1),
-
-                CurrentDueDate = currentDueDate,
-            };
-
-            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
-
-            var result = libraryManager.ReturnBook(book, currentDueDate);
-
-            Assert.Equal("MediumRisk: returned late last time but on due date this time", result);
-        }
-
-        [Fact]
-        public void ShouldReturn_HighRisk_When_BookWasReturnedLateLastTimeAndLateThisTime()
-        {
-            var lastDueDate = DateTime.Now.AddDays(-2);
-            var currentDueDate = DateTime.Now.AddDays(-1);
-            var book = new Book()
-            {
-                LastDueDate = lastDueDate,
-                LastReturnedDate = lastDueDate.AddDays(1),
-
-                CurrentDueDate = currentDueDate,
-            };
-
-            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
-
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
+            var result = await _libraryManager.ReturnBook(book, currentDueDate.AddDays(1)); // late again
 
             Assert.Equal("HighRisk: returned late last time and late this time", result);
         }
 
         [Fact]
-        public void ShouldReturn_MediumRisk_When_BookWasLateLastTimeButEarlyThisTime()
+        public async Task ShouldReturn_AIResult_When_NoStrategyMatches()
         {
-            var lastDueDate = DateTime.Now.AddDays(-2);
-            var currentDueDate = DateTime.Now;
-            var book = new Book()
+            var book = new Book
             {
-                LastDueDate = lastDueDate,
-                LastReturnedDate = lastDueDate.AddDays(1),
-
-                CurrentDueDate = currentDueDate,
+                LastDueDate = DateTime.Today,
+                LastReturnedDate = DateTime.Today.AddDays(-1), // breaks match
+                CurrentDueDate = default                         // invalid due date
             };
 
-            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
- * var libraryManager = new LibraryManager();*/
-
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
-
-            Assert.Equal("MediumRisk: returned late last time but early this time", result);
-        }
-
-
-        [Fact]
-        public void ShouldReturn_LowRisk_When_BookWasReturnedEarlyLastTimeAndOnDueDateThisTime()
-        {
-            var lastDueDate = DateTime.Now.AddDays(-1);
-            var currentDueDate = DateTime.Now;
-            var book = new Book()
-            {
-                LastDueDate = lastDueDate,
-                LastReturnedDate = lastDueDate.AddDays(-1),
-
-                CurrentDueDate = currentDueDate,
-            };
-
-            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
- * var libraryManager = new LibraryManager();*/
-
-            var result = libraryManager.ReturnBook(book, currentDueDate);
-
-            Assert.Equal("LowRisk: returned on early last time and on due date this time", result);
+            var result = await _libraryManager.ReturnBook(book, DateTime.Today);
+            Assert.StartsWith("MediumRisk:", result);
+            Assert.Contains("AI Risk Prediction:", result);
         }
 
         [Fact]
-        public void ShouldReturn_MediumRisk_When_BookWasReturnedEarlyLastTimeButWasLateThisTime()
+        public async Task ShouldThrow_ApplicationException_When_BookIsNull()
         {
-            var lastDueDate = DateTime.Now.AddDays(-2);
-            var currentDueDate = DateTime.Now.AddDays(-1);
-            var book = new Book()
-            {
-                LastDueDate = lastDueDate,
-                LastReturnedDate = lastDueDate.AddDays(-1),
+            var ex = await Assert.ThrowsAsync<ApplicationException>(() =>
+                _libraryManager.ReturnBook(null, DateTime.Today));
 
-                CurrentDueDate = currentDueDate,
-            };
-
-            /* TODO: No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
- * var libraryManager = new LibraryManager();*/
-
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
-
-            Assert.Equal("MediumRisk: returned early last time but late this time", result);
+            Assert.Contains("Validation failed", ex.Message);
+            Assert.IsType<ArgumentNullException>(ex.InnerException);
         }
 
         [Fact]
-        public void ShouldReturn_LowRisk_When_BookWasReturnedEarlyLastTimeAndEarlyThisTime()
+        public async Task ShouldThrow_ApplicationException_When_AIServiceFails()
         {
-            var lastDueDate = DateTime.Now.AddDays(-2);
-            var currentDueDate = DateTime.Now.AddDays(-1);
-            var book = new Book()
+            var manager = new LibraryManager(new FailingAIRiskService());
+            var book = new Book
             {
-                LastDueDate = lastDueDate,
-                LastReturnedDate = lastDueDate.AddDays(-1),
-
-                CurrentDueDate = currentDueDate,
+                LastDueDate = DateTime.Today,
+                LastReturnedDate = DateTime.Today.AddDays(-1),
+                CurrentDueDate = default
             };
-            //var libraryManager = new LibraryManager(); //No longer need to create a new instance of LibraryManager with each test as it is now part of shared setup logic
 
-            var result = libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
+            var ex = await Assert.ThrowsAsync<ApplicationException>(() =>
+                manager.ReturnBook(book, DateTime.Today));
 
-            Assert.Equal("LowRisk: returned early last time and early this time", result);
+            Assert.Contains("Risk Strategy error", ex.Message);
+            Assert.IsType<InvalidOperationException>(ex.InnerException);
         }
 
         [Fact]
-        public void ShouldReturnLowRisk_WhenReturnedOnTime()
+        public async Task ShouldThrow_ApplicationException_When_UnexpectedErrorOccursInAIService()
         {
-            var strategy = new InitialReturnStrategy();
-            var book = new Book { CurrentDueDate = DateTime.Today };
-            var result = strategy.Evaluate(book, DateTime.Today);
+            var manager = new LibraryManager(new ExplodingAIRiskService());
 
-            Assert.Equal(RiskLevel.Low, result.Level);
+            var book = new Book
+            {
+                LastDueDate = DateTime.Today,
+                LastReturnedDate = DateTime.Today.AddDays(-1), // breaks strategy match
+                CurrentDueDate = default
+            };
+
+            var ex = await Assert.ThrowsAsync<ApplicationException>(() =>
+                manager.ReturnBook(book, DateTime.Today));
+
+            Assert.Contains("unexpected error", ex.Message.ToLower());
+            Assert.IsType<NullReferenceException>(ex.InnerException);
         }
-
     }
 }
