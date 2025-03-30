@@ -213,7 +213,7 @@ var assemblies = [
   {
     "name": "ProcessDelivery.Application",
     "classes": [
-      { "name": "ProcessDelivery.Application.LibraryManager", "rp": "ProcessDelivery.Application_LibraryManager.html", "cl": 33, "ucl": 3, "cal": 36, "tl": 66, "cb": 5, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "ProcessDelivery.Application.LibraryManager", "rp": "ProcessDelivery.Application_LibraryManager.html", "cl": 36, "ucl": 0, "cal": 36, "tl": 66, "cb": 5, "tb": 6, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "ProcessDelivery.Application.RiskStrategies.EarlyThenEarlyStrategy", "rp": "ProcessDelivery.Application_EarlyThenEarlyStrategy.html", "cl": 28, "ucl": 0, "cal": 28, "tl": 47, "cb": 11, "tb": 12, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "ProcessDelivery.Application.RiskStrategies.EarlyThenLateStrategy", "rp": "ProcessDelivery.Application_EarlyThenLateStrategy.html", "cl": 13, "ucl": 0, "cal": 13, "tl": 27, "cb": 7, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
       { "name": "ProcessDelivery.Application.RiskStrategies.EarlyThenOnTimeStrategy", "rp": "ProcessDelivery.Application_EarlyThenOnTimeStrategy.html", "cl": 13, "ucl": 0, "cal": 13, "tl": 27, "cb": 7, "tb": 8, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
@@ -232,7 +232,7 @@ var assemblies = [
   {
     "name": "ProcessDelivery.Infrastructure",
     "classes": [
-      { "name": "ProcessDelivery.Infrastructure.Services.OpenAIRiskService", "rp": "ProcessDelivery.Infrastructure_OpenAIRiskService.html", "cl": 44, "ucl": 6, "cal": 50, "tl": 78, "cb": 10, "tb": 14, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
+      { "name": "ProcessDelivery.Infrastructure.Services.OpenAIRiskService", "rp": "ProcessDelivery.Infrastructure_OpenAIRiskService.html", "cl": 65, "ucl": 2, "cal": 67, "tl": 89, "cb": 22, "tb": 26, "cm": 0, "fcm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "mfch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
