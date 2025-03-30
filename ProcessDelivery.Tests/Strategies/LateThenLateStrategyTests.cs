@@ -6,24 +6,24 @@ using Xunit;
 
 namespace ProcessDelivery.Tests.Strategies
 {
-    public class EarlyThenLateStrategyTests
+    public class LateThenLateStrategyTests
     {
-        private readonly EarlyThenLateStrategy _strategy = new EarlyThenLateStrategy();
+        private readonly LateThenLateStrategy _strategy = new();
 
         [Fact]
-        public void ShouldMatch_When_LastReturnWasEarly()
+        public void ShouldMatch_When_LastReturnWasLate_And_CurrentIsLateToo()
         {
             var book = new Book
             {
-                LastDueDate = DateTime.Today,
-                LastReturnedDate = DateTime.Today.AddDays(-1),
-                CurrentDueDate = DateTime.Today
+                LastDueDate = DateTime.Today.AddDays(-2),
+                LastReturnedDate = DateTime.Today,
+                CurrentDueDate = DateTime.Today.AddDays(-1)
             };
-            Assert.True(_strategy.IsMatch(book, DateTime.Today.AddDays(1)));
+            Assert.True(_strategy.IsMatch(book, DateTime.Today));
         }
 
         [Fact]
-        public void ShouldNotMatch_When_LastReturnedDate_IsNotEarlierThanLastDueDate()
+        public void ShouldNotMatch_When_LastReturnWasNotLate()
         {
             var book = new Book
             {
@@ -35,11 +35,11 @@ namespace ProcessDelivery.Tests.Strategies
         }
 
         [Fact]
-        public void ShouldReturnMediumRisk_When_ReturnedLateAfterEarlyLastTime()
+        public void ShouldReturnHighRisk_When_ReturnedLateAgain()
         {
             var book = new Book { CurrentDueDate = DateTime.Today };
             var result = _strategy.Evaluate(book, DateTime.Today.AddDays(1));
-            Assert.Equal(RiskLevel.Medium, result.Level);
+            Assert.Equal(RiskLevel.High, result.Level);
         }
     }
 }

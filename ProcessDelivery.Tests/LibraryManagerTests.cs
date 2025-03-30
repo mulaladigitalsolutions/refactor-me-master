@@ -3,9 +3,7 @@ using System;
 using System.Threading.Tasks;
 using ProcessDelivery.Domain.Models;
 using ProcessDelivery.Application;
-using ProcessDelivery.Domain.Interfaces;
 using Xunit;
-using ProcessDelivery.Domain.Enums;
 
 namespace ProcessDelivery.Tests
 {
@@ -49,6 +47,23 @@ namespace ProcessDelivery.Tests
             var result = await _libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
 
             Assert.Equal("LowRisk: first time being returned and returned early", result);
+        }
+
+        [Fact]
+        public async Task ShouldReturn_HighRisk_When_BookWasReturnedLateLastTime_AndLateAgain()
+        {
+            var lastDueDate = DateTime.Today.AddDays(-2);
+            var currentDueDate = DateTime.Today.AddDays(-1);
+            var book = new Book
+            {
+                LastDueDate = lastDueDate,
+                LastReturnedDate = lastDueDate.AddDays(1), // late
+                CurrentDueDate = currentDueDate
+            };
+
+            var result = await _libraryManager.ReturnBook(book, currentDueDate.AddDays(1)); // late again
+
+            Assert.Equal("HighRisk: returned late last time and late this time", result);
         }
 
         [Fact]

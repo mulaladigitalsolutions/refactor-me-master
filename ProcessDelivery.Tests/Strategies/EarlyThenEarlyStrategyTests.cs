@@ -8,7 +8,7 @@ namespace ProcessDelivery.Tests.Strategies
 {
     public class EarlyThenEarlyStrategyTests
     {
-        private readonly EarlyThenEarlyStrategy _strategy = new EarlyThenEarlyStrategy();
+        private readonly EarlyThenEarlyStrategy _strategy = new();
 
         [Fact]
         public void ShouldMatch_When_LastReturnWasEarly_And_CurrentDueDateValid()
