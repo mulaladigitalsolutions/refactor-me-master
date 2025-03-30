@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "+f7TxMi5OcA=",
+  "dgSpecHash": "Hp3iylLxOw0=",
   "success": true,
   "projectFilePath": "C:\\Users\\rambu\\OneDrive\\Documents\\Code\\refactor-me-master\\ProcessDelivery.Tests\\ProcessDelivery.Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rambu\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
+    "C:\\Users\\rambu\\.nuget\\packages\\coverlet.collector\\6.0.4\\coverlet.collector.6.0.4.nupkg.sha512",
     "C:\\Users\\rambu\\.nuget\\packages\\microsoft.codecoverage\\17.13.0\\microsoft.codecoverage.17.13.0.nupkg.sha512",
     "C:\\Users\\rambu\\.nuget\\packages\\microsoft.net.test.sdk\\17.13.0\\microsoft.net.test.sdk.17.13.0.nupkg.sha512",
     "C:\\Users\\rambu\\.nuget\\packages\\microsoft.testplatform.objectmodel\\17.13.0\\microsoft.testplatform.objectmodel.17.13.0.nupkg.sha512",

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ProcessDelivery.Domain.Models;
 using ProcessDelivery.Application;
 using Xunit;
+using ProcessDelivery.Tests.Fake;
 
 namespace ProcessDelivery.Tests
 {
@@ -79,6 +80,34 @@ namespace ProcessDelivery.Tests
             var result = await _libraryManager.ReturnBook(book, DateTime.Today);
             Assert.StartsWith("MediumRisk:", result);
             Assert.Contains("AI Risk Prediction:", result);
+        }
+
+        [Fact]
+        public async Task ShouldThrow_ApplicationException_When_BookIsNull()
+        {
+            var ex = await Assert.ThrowsAsync<ApplicationException>(() =>
+                _libraryManager.ReturnBook(null, DateTime.Today));
+
+            Assert.Contains("Validation failed", ex.Message);
+            Assert.IsType<ArgumentNullException>(ex.InnerException);
+        }
+
+        [Fact]
+        public async Task ShouldThrow_ApplicationException_When_AIServiceFails()
+        {
+            var manager = new LibraryManager(new FailingAIRiskService());
+            var book = new Book
+            {
+                LastDueDate = DateTime.Today,
+                LastReturnedDate = DateTime.Today.AddDays(-1),
+                CurrentDueDate = default
+            };
+
+            var ex = await Assert.ThrowsAsync<ApplicationException>(() =>
+                manager.ReturnBook(book, DateTime.Today));
+
+            Assert.Contains("Risk Strategy error", ex.Message);
+            Assert.IsType<InvalidOperationException>(ex.InnerException);
         }
     }
 }

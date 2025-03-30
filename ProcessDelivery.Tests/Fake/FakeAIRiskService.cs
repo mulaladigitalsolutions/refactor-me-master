@@ -4,7 +4,7 @@ using ProcessDelivery.Domain.Enums;
 using ProcessDelivery.Domain.Interfaces;
 using ProcessDelivery.Domain.Models;
 
-namespace ProcessDelivery.Tests
+namespace ProcessDelivery.Tests.Fake
 {
     public class FakeAIRiskService : IAIRiskService
     {

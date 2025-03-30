@@ -107,3 +107,4 @@ C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Tests\
 C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Tests\bin\Debug\net9.0\.msCoverageSourceRootsMapping_ProcessDelivery.Tests
 C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Tests\bin\Debug\net9.0\testhost.exe
 C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Tests\bin\Debug\net9.0\xunit.runner.visualstudio.testadapter.dll
+C:\Users\rambu\OneDrive\Documents\Code\refactor-me-master\ProcessDelivery.Tests\bin\Debug\net9.0\CoverletSourceRootsMapping_ProcessDelivery.Tests

@@ -14,9 +14,9 @@ namespace ProcessDelivery.Infrastructure.Services
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
 
-        public OpenAIRiskService(string apiKey)
+        public OpenAIRiskService(HttpClient httpClient, string apiKey)
         {
-            _httpClient = new HttpClient();
+            _httpClient = httpClient;
             _apiKey = apiKey;
             _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {_apiKey}");
         }
