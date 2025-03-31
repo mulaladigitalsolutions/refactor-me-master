@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "A+Ix+regTUA=",
+  "dgSpecHash": "GtSAE//D4M4=",
   "success": true,
   "projectFilePath": "C:\\Users\\rambu\\OneDrive\\Documents\\Code\\refactor-me-master\\ProcessDelivery\\ProcessDelivery.Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\rambu\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\9.0.3\\microsoft.extensions.dependencyinjection.abstractions.9.0.3.nupkg.sha512",
+    "C:\\Users\\rambu\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\9.0.3\\microsoft.extensions.logging.abstractions.9.0.3.nupkg.sha512",
+    "C:\\Users\\rambu\\.nuget\\packages\\serilog\\4.2.0\\serilog.4.2.0.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Moq;
 using ProcessDelivery.Application.RiskStrategies;
 using ProcessDelivery.Domain.Interfaces;
 using ProcessDelivery.Domain.Models;
@@ -11,32 +13,17 @@ namespace ProcessDelivery.Tests
 {
     public class LibraryManagerTests
     {
-        private readonly LibraryManager _libraryManager;
-
-        public LibraryManagerTests()
-        {
-            var strategies = new List<IRiskStrategy>
-            {
-                new InitialReturnStrategy(),
-                new OnTimeTwiceStrategy(),
-                new EarlyThenEarlyStrategy(),
-                new EarlyThenLateStrategy(),
-                new EarlyThenOnTimeStrategy(),
-                new LateThenLateStrategy(),
-                new LateThenOnTimeStrategy(),
-                new LateThenEarlyStrategy()
-            };
-
-            _libraryManager = new LibraryManager(strategies, new FakeAIRiskService());
-        }
-
         [Fact]
         public async Task ShouldReturn_LowRisk_When_NoReturnHistoryExistsAndReturnedOnDueDateThisTime()
         {
+            var mockLogger = new Mock<ILogger<LibraryManager>>();
+            var strategies = new List<IRiskStrategy> { new InitialReturnStrategy() };
+            var manager = new LibraryManager(strategies, new FakeAIRiskService(), mockLogger.Object);
+
             var currentDueDate = DateTime.Today;
             var book = new Book { LastDueDate = null, LastReturnedDate = null, CurrentDueDate = currentDueDate };
 
-            var result = await _libraryManager.ReturnBook(book, currentDueDate);
+            var result = await manager.ReturnBook(book, currentDueDate);
 
             Assert.Equal("LowRisk: first time being returned and returned on time", result);
         }
@@ -44,10 +31,14 @@ namespace ProcessDelivery.Tests
         [Fact]
         public async Task ShouldReturn_MediumRisk_When_NoReturnHistoryExistsAndReturnedLateThisTime()
         {
+            var mockLogger = new Mock<ILogger<LibraryManager>>();
+            var strategies = new List<IRiskStrategy> { new InitialReturnStrategy() };
+            var manager = new LibraryManager(strategies, new FakeAIRiskService(), mockLogger.Object);
+
             var currentDueDate = DateTime.Today;
             var book = new Book { LastDueDate = null, LastReturnedDate = null, CurrentDueDate = currentDueDate };
 
-            var result = await _libraryManager.ReturnBook(book, currentDueDate.AddDays(1));
+            var result = await manager.ReturnBook(book, currentDueDate.AddDays(1));
 
             Assert.Equal("MediumRisk: first time being returned and returned late", result);
         }
@@ -55,10 +46,14 @@ namespace ProcessDelivery.Tests
         [Fact]
         public async Task ShouldReturn_LowRisk_When_NoReturnHistoryExistsAndReturnedEarlyThisTime()
         {
+            var mockLogger = new Mock<ILogger<LibraryManager>>();
+            var strategies = new List<IRiskStrategy> { new InitialReturnStrategy() };
+            var manager = new LibraryManager(strategies, new FakeAIRiskService(), mockLogger.Object);
+
             var currentDueDate = DateTime.Today;
             var book = new Book { LastDueDate = null, LastReturnedDate = null, CurrentDueDate = currentDueDate };
 
-            var result = await _libraryManager.ReturnBook(book, currentDueDate.AddDays(-1));
+            var result = await manager.ReturnBook(book, currentDueDate.AddDays(-1));
 
             Assert.Equal("LowRisk: first time being returned and returned early", result);
         }
@@ -66,16 +61,20 @@ namespace ProcessDelivery.Tests
         [Fact]
         public async Task ShouldReturn_HighRisk_When_BookWasReturnedLateLastTime_AndLateAgain()
         {
+            var mockLogger = new Mock<ILogger<LibraryManager>>();
+            var strategies = new List<IRiskStrategy> { new LateThenLateStrategy() };
+            var manager = new LibraryManager(strategies, new FakeAIRiskService(), mockLogger.Object);
+
             var lastDueDate = DateTime.Today.AddDays(-2);
             var currentDueDate = DateTime.Today.AddDays(-1);
             var book = new Book
             {
                 LastDueDate = lastDueDate,
-                LastReturnedDate = lastDueDate.AddDays(1), // late
+                LastReturnedDate = lastDueDate.AddDays(1),
                 CurrentDueDate = currentDueDate
             };
 
-            var result = await _libraryManager.ReturnBook(book, currentDueDate.AddDays(1)); // late again
+            var result = await manager.ReturnBook(book, currentDueDate.AddDays(1));
 
             Assert.Equal("HighRisk: returned late last time and late this time", result);
         }
@@ -83,23 +82,40 @@ namespace ProcessDelivery.Tests
         [Fact]
         public async Task ShouldReturn_AIResult_When_NoStrategyMatches()
         {
+            var mockLogger = new Mock<ILogger<LibraryManager>>();
+            var strategies = new List<IRiskStrategy>(); // no match
+            var manager = new LibraryManager(strategies, new FakeAIRiskService(), mockLogger.Object);
+
             var book = new Book
             {
                 LastDueDate = DateTime.Today,
-                LastReturnedDate = DateTime.Today.AddDays(-1), // breaks match
-                CurrentDueDate = default                         // invalid due date
+                LastReturnedDate = DateTime.Today.AddDays(-1),
+                CurrentDueDate = default
             };
 
-            var result = await _libraryManager.ReturnBook(book, DateTime.Today);
+            var result = await manager.ReturnBook(book, DateTime.Today);
+
             Assert.StartsWith("MediumRisk:", result);
             Assert.Contains("AI Risk Prediction:", result);
+
+            mockLogger.Verify(
+                x => x.Log(
+                    LogLevel.Warning,
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((v, t) => v.ToString() != null && v.ToString().Contains("No matching strategy")),
+                    It.IsAny<Exception>(),
+                    It.IsAny<Func<It.IsAnyType, Exception, string>>()
+                ), Times.Once);
         }
 
         [Fact]
         public async Task ShouldThrow_ApplicationException_When_BookIsNull()
         {
+            var mockLogger = new Mock<ILogger<LibraryManager>>();
+            var manager = new LibraryManager([], new FakeAIRiskService(), mockLogger.Object);
+
             var ex = await Assert.ThrowsAsync<ApplicationException>(() =>
-                _libraryManager.ReturnBook(null, DateTime.Today));
+                manager.ReturnBook(null, DateTime.Today));
 
             Assert.Contains("Validation failed", ex.Message);
             Assert.IsType<ArgumentNullException>(ex.InnerException);
@@ -108,7 +124,8 @@ namespace ProcessDelivery.Tests
         [Fact]
         public async Task ShouldThrow_ApplicationException_When_AIServiceFails()
         {
-            var manager = new LibraryManager([], new FailingAIRiskService());
+            var mockLogger = new Mock<ILogger<LibraryManager>>();
+            var manager = new LibraryManager([], new FailingAIRiskService(), mockLogger.Object);
             var book = new Book
             {
                 LastDueDate = DateTime.Today,
@@ -126,7 +143,8 @@ namespace ProcessDelivery.Tests
         [Fact]
         public async Task ShouldThrow_ApplicationException_When_UnexpectedErrorOccursInAIService()
         {
-            var manager = new LibraryManager([], new ExplodingAIRiskService());
+            var mockLogger = new Mock<ILogger<LibraryManager>>();
+            var manager = new LibraryManager([], new ExplodingAIRiskService(), mockLogger.Object);
 
             var book = new Book
             {
