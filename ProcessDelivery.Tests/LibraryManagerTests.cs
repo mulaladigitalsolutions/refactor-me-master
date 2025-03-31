@@ -1,10 +1,11 @@
-// ProcessDelivery.Tests/LibraryManagerTests.cs (LibraryManager only)
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using ProcessDelivery.Application.RiskStrategies;
+using ProcessDelivery.Domain.Interfaces;
 using ProcessDelivery.Domain.Models;
-using ProcessDelivery.Application;
-using Xunit;
 using ProcessDelivery.Tests.Fake;
+using Xunit;
 
 namespace ProcessDelivery.Tests
 {
@@ -14,7 +15,19 @@ namespace ProcessDelivery.Tests
 
         public LibraryManagerTests()
         {
-            _libraryManager = new LibraryManager(new FakeAIRiskService());
+            var strategies = new List<IRiskStrategy>
+            {
+                new InitialReturnStrategy(),
+                new OnTimeTwiceStrategy(),
+                new EarlyThenEarlyStrategy(),
+                new EarlyThenLateStrategy(),
+                new EarlyThenOnTimeStrategy(),
+                new LateThenLateStrategy(),
+                new LateThenOnTimeStrategy(),
+                new LateThenEarlyStrategy()
+            };
+
+            _libraryManager = new LibraryManager(strategies, new FakeAIRiskService());
         }
 
         [Fact]
@@ -95,7 +108,7 @@ namespace ProcessDelivery.Tests
         [Fact]
         public async Task ShouldThrow_ApplicationException_When_AIServiceFails()
         {
-            var manager = new LibraryManager(new FailingAIRiskService());
+            var manager = new LibraryManager([], new FailingAIRiskService());
             var book = new Book
             {
                 LastDueDate = DateTime.Today,
@@ -113,7 +126,7 @@ namespace ProcessDelivery.Tests
         [Fact]
         public async Task ShouldThrow_ApplicationException_When_UnexpectedErrorOccursInAIService()
         {
-            var manager = new LibraryManager(new ExplodingAIRiskService());
+            var manager = new LibraryManager([], new ExplodingAIRiskService());
 
             var book = new Book
             {
